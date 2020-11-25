@@ -13,6 +13,10 @@ public class Main {
 class ventana extends JFrame{
     private JPanel panelPlano, panelControles;
     private JLabel titulo;
+    private JTextField txtXOriginal, txtYOriginal, txtXTrans, txtYTrans;
+    private JButton btnDrawTrans;
+
+
 
 
     public ventana(){
@@ -22,17 +26,23 @@ class ventana extends JFrame{
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setBackground(Color.white);
+
+
+
         /*Configuracion del titulo*/
         titulo = new JLabel("Trasladar un punto en el plano");
         titulo.setBounds(20,20,680,60);
         titulo.setVisible(true);
-
+        Font f = new Font("Arial", Font.BOLD, 28);
+        titulo.setFont(f);
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
 
         /*Configuracion del plano para dibujar*/
         panelPlano = new JPanel();
         panelPlano.setBounds(200,100,500,500);
         panelPlano.setVisible(true);
-        panelPlano.setBackground(Color.BLUE);
+        panelPlano.setBackground(Color.LIGHT_GRAY);
+
         /*Configuracion del plano controles*/
         panelControles = new JPanel();
         panelControles.setBounds(20,100,160,500);
@@ -40,12 +50,19 @@ class ventana extends JFrame{
         panelControles.setBackground(Color.gray);
 
 
+                /*COnfiguracion de los txt*/
+        txtXOriginal = new JTextField();
+        txtXOriginal.setBounds(40,120, 120, 40);
+        txtXOriginal.setVisible(true);
 
         /*Agregar los componentes*/
         this.setLayout(null);
+        panelControles.setLayout(null);
+
+        this.add(titulo);
+        //this.add(txtXOriginal);
         this.add(panelPlano);
         this.add(panelControles);
-        this.add(titulo);
     }
 
 
