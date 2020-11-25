@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
@@ -36,7 +38,7 @@ class ventana extends JFrame {
 
         /*Configuracion del plano para dibujar*/
         panelPlano = new JPanel();
-        panelPlano.setBounds(200, 100, 500, 550);
+        panelPlano.setBounds(200, 100, 500, 500);
         panelPlano.setVisible(true);
         panelPlano.setBackground(Color.LIGHT_GRAY);
 
@@ -46,17 +48,25 @@ class ventana extends JFrame {
         panelControles.setVisible(true);
         panelControles.setBackground(Color.gray);
 
-        /*COnfiguracion de los txt y lbl*/
+        /*COnfiguracion de los txt y lbl y btn*/
         infoXOriginal = initInstrucciones(40, 120, 120, 40, "Ingrese la coordenada original en X:");
         txtXOriginal = initTxt(40, 170, 120, 30);
 
         infoYOriginal = initInstrucciones(40, 200, 120, 40, "Ingrese la coordenada original en Y:");
         txtYOriginal = initTxt(40, 250, 120, 30);
 
+
         btnDrawOrigin = new JButton("Dibujar original");
         btnDrawOrigin.setBounds(40, 290, 120, 40);
         btnDrawOrigin.setVisible(true);
         btnDrawOrigin.setFont(new Font("Arial", Font.BOLD, 10));
+        btnDrawOrigin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drawPlano(panelPlano);
+            }
+        });
+
 
 
         infoXTrans = initInstrucciones(40, 280 + 50, 120, 40, "Unidades para trasladar en X:");
@@ -93,14 +103,7 @@ class ventana extends JFrame {
         this.add(infoResultado);
         this.add(panelPlano);
         this.add(panelControles);
-        paint(panelPlano.getGraphics());
-
-
-    }
-
-    @Override
-    public void paint(Graphics g){
-        g.drawLine(0, 0, 50, 50);
+        repaint();
     }
 
 
@@ -121,8 +124,20 @@ class ventana extends JFrame {
         return txt;
     }
 
-    public void drawPlano() {
-        Graphics g = panelPlano.getGraphics();
+
+
+    public void drawPlano(JPanel p) {
+        Graphics g = p.getGraphics();
+        g.setColor(Color.RED);
+        g.drawLine(p.getWidth()/2, 0, p.getWidth()/2, p.getHeight());
+        g.drawLine(0, p.getHeight()/2, p.getWidth(),p.getHeight()/2 );
+        for(int i=0;i<=p.getWidth();i+=10){
+            g.drawLine(i, (p.getHeight()/2)-5, i, (p.getHeight()/2)+5);
+        }
+        for(int i=0;i<=p.getHeight();i+=10){
+            g.drawLine( (p.getWidth()/2)-5, i , (p.getWidth()/2)+5, i);
+        }
+        g.dispose();
 
     }
 
