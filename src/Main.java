@@ -18,7 +18,60 @@ class ventana extends JFrame {
     private JTextField txtXOriginal, txtYOriginal, txtXTrans, txtYTrans;
     private JLabel infoXOriginal, infoYOriginal, infoXTrans, infoYTrans, infoBtnTrans, infoResultado;
     private JButton btnDrawOrigin, btnDrawTrans;
+    private int xO, yO, x1, y1;
 
+    public int getX1() {
+        return x1;
+    }
+
+    public void setX1(int x1) {
+        this.x1 = getxO() + (x1 * 10);
+    }
+
+    public int getY1() {
+        return y1;
+    }
+
+    public void setY1(int y1) {
+        this.y1 = getyO() + (y1 * 10);
+    }
+
+    public void setxO(int xo) {
+        this.xO = xo * 10;
+    }
+
+    public int getxO() {
+        return this.xO;
+    }
+
+    public void setyO(int yo) {
+        this.yO = yo * 10;
+    }
+
+    public int getyO() {
+        return this.yO;
+    }
+
+    public void setCoordenadas(JTextField x, JTextField y) {
+        if (x.getText().equals("") || y.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "NO PUEDE DEJAR EL CAMPO DE LA COORDENADA ORIGINAL VACÍO");
+            repaint();
+        } else {
+            setxO(Integer.parseInt(x.getText()));
+            setyO(Integer.parseInt(y.getText()));
+        }
+    }
+
+    public void setCoordenadasTrans(JTextField x, JTextField y) {
+        if (x.getText().equals("") || y.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "NO PUEDE DEJAR VACIOS LOS CAMPOS DE TRASLACION");
+            setX1(0);
+            setY1(0);
+        } else {
+            setX1(Integer.parseInt(x.getText()));
+            setY1(Integer.parseInt(y.getText()));
+        }
+    }
 
     public ventana() {
         this.setBounds(0, 0, 720, 700);
@@ -63,10 +116,12 @@ class ventana extends JFrame {
         btnDrawOrigin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setCoordenadas(txtXOriginal, txtYOriginal);
+                drawFirstPoint(panelPlano, getxO(), getyO());
                 drawPlano(panelPlano);
+
             }
         });
-
 
 
         infoXTrans = initInstrucciones(40, 280 + 50, 120, 40, "Unidades para trasladar en X:");
@@ -76,10 +131,19 @@ class ventana extends JFrame {
         txtYTrans = initTxt(40, 400 + 50, 120, 30);
 
         infoBtnTrans = initInstrucciones(40, 450 + 50, 120, 40, "Presione para trasladar: ");
+
         btnDrawTrans = new JButton("Trasladar");
         btnDrawTrans.setBounds(50, 500 + 50, 100, 40);
         btnDrawTrans.setVisible(true);
         btnDrawTrans.setFont(new Font("Arial", Font.BOLD, 10));
+        btnDrawTrans.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setCoordenadasTrans(txtXTrans, txtYTrans);
+                drawTranslatedPoint(panelPlano, getX1(), getY1());
+                infoResultado.setText("x1= " + getX1()/10 + "\ty1= " + getY1()/10);
+            }
+        });
 
         infoResultado = initInstrucciones(40, 550 + 50, 120, 40, "Nuevas coordenadas...");
 
@@ -107,7 +171,6 @@ class ventana extends JFrame {
     }
 
 
-
     public JLabel initInstrucciones(int x, int y, int w, int h, String t) {
         Font f = new Font("Arial", Font.BOLD, 10);
         JLabel lbl = new JLabel("<html>" + t + "</html>");
@@ -125,20 +188,33 @@ class ventana extends JFrame {
     }
 
 
+    public void drawFirstPoint(JPanel plano, int x, int y) {
+        Graphics g = plano.getGraphics();
+        x = x + plano.getWidth() / 2;
+        y = plano.getHeight() / 2 - y;
+        System.out.println("Coordenadas del punto original: " + x + ", " + y);
+        g.fillOval(x - 5, y - 5, 10, 10);
+    }
+
+    public void drawTranslatedPoint(JPanel plano, int x, int y) {
+        Graphics g = plano.getGraphics();
+        x = x + plano.getWidth() / 2;
+        y = plano.getHeight() / 2 - y;
+        System.out.println("Coordenadas del punto translated: " + x + ", " + y);
+        g.fillOval(x - 5, y - 5, 10, 10);
+    }
+
 
     public void drawPlano(JPanel p) {
         Graphics g = p.getGraphics();
         g.setColor(Color.RED);
-        g.drawLine(p.getWidth()/2, 0, p.getWidth()/2, p.getHeight());
-        g.drawLine(0, p.getHeight()/2, p.getWidth(),p.getHeight()/2 );
-        for(int i=0;i<=p.getWidth();i+=10){
-            g.drawLine(i, (p.getHeight()/2)-5, i, (p.getHeight()/2)+5);
+        g.drawLine(p.getWidth() / 2, 0, p.getWidth() / 2, p.getHeight());
+        g.drawLine(0, p.getHeight() / 2, p.getWidth(), p.getHeight() / 2);
+        for (int i = 0; i <= p.getWidth(); i += 10) {
+            g.drawLine(i, (p.getHeight() / 2) - 5, i, (p.getHeight() / 2) + 5);
         }
-        for(int i=0;i<=p.getHeight();i+=10){
-            g.drawLine( (p.getWidth()/2)-5, i , (p.getWidth()/2)+5, i);
+        for (int i = 0; i <= p.getHeight(); i += 10) {
+            g.drawLine((p.getWidth() / 2) - 5, i, (p.getWidth() / 2) + 5, i);
         }
-        g.dispose();
-
     }
-
 }
