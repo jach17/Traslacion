@@ -52,7 +52,7 @@ class ventana extends JFrame{
 
                 /*COnfiguracion de los txt*/
         txtXOriginal = new JTextField();
-        txtXOriginal.setBounds(40,120, 120, 40);
+        txtXOriginal.setBounds(40,120, 120, 30);
         txtXOriginal.setVisible(true);
 
         /*Agregar los componentes*/
@@ -60,9 +60,10 @@ class ventana extends JFrame{
         panelControles.setLayout(null);
 
         this.add(titulo);
-        //this.add(txtXOriginal);
+        this.add(txtXOriginal);
         this.add(panelPlano);
         this.add(panelControles);
+        repaint();
     }
 
 
